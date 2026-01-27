@@ -20,9 +20,22 @@ const BookDetails = () => {
 
   const fetchBookDetails = async () => {
     try {
+      Swal.fire({
+        toast: true,
+        position: "top-end",
+        title: "Loading book details...",
+        didOpen: () => Swal.showLoading(),
+        showConfirmButton: false,
+        background: "#ffffff",
+        color: "#111111",
+        iconColor: "#555555",
+        customClass: { popup: "swal-toast-dark" }
+      });
+
       const res = await axios.get(
-        `${import.meta.env.VITE_BASE_URL}/book/${id}`,
+        `${import.meta.env.VITE_BASE_URL}/book/${id}`
       );
+
       setBook(res.data);
       setEditData({
         title: res.data.title || "",
@@ -32,14 +45,27 @@ const BookDetails = () => {
           ? res.data.publishedDate.slice(0, 10)
           : "",
       });
+
+      Swal.close();
     } catch (error) {
+      Swal.close();
+
       Swal.fire({
+        toast: true,
+        position: "top-end",
         icon: "error",
-        title: "Error",
-        text: "Could not load book details.",
+        title: "Could not load book details",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        background: "#ffffff",
+        color: "#111111",
+        iconColor: "#555555",
+        customClass: { popup: "swal-toast-dark" }
       });
     }
   };
+
 
   const handleDelete = async () => {
     const result = await Swal.fire({
@@ -55,22 +81,54 @@ const BookDetails = () => {
     if (!result.isConfirmed) return;
 
     try {
-      await axios.delete(`${import.meta.env.VITE_BASE_URL}/book/${id}`);
+      Swal.fire({
+        toast: true,
+        position: "top-end",
+        title: "Deleting book...",
+        didOpen: () => Swal.showLoading(),
+        showConfirmButton: false,
+        background: "#ffffff",
+        color: "#111111",
+        iconColor: "#555555",
+        customClass: { popup: "swal-toast-dark" }
+      });
+
+      await axios.delete(
+        `${import.meta.env.VITE_BASE_URL}/book/${id}`
+      );
+
+      Swal.close();
 
       Swal.fire({
+        toast: true,
+        position: "top-end",
         icon: "success",
-        title: "Deleted!",
-        text: "Book has been deleted successfully.",
-        timer: 1500,
+        title: "Book deleted successfully",
         showConfirmButton: false,
+        timer: 2000,
+        timerProgressBar: true,
+        background: "#ffffff",
+        color: "#111111",
+        iconColor: "#2e7d32",
+        customClass: { popup: "swal-toast-dark" }
       });
 
       navigate("/");
     } catch (error) {
+      Swal.close();
+
       Swal.fire({
+        toast: true,
+        position: "top-end",
         icon: "error",
         title: "Delete failed",
-        text: "Unable to delete the book. Please try again.",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        background: "#ffffff",
+        color: "#111111",
+        iconColor: "#555555",
+        customClass: { popup: "swal-toast-dark" }
       });
     }
   };
@@ -82,9 +140,16 @@ const BookDetails = () => {
   const handleUpdate = async () => {
     if (!editData.title.trim() || !editData.author.trim()) {
       Swal.fire({
+        toast: true,
+        position: "top-end",
         icon: "error",
-        title: "Incomplete Form",
-        text: "Please fill in both Title and Author before updating.",
+        title: "Title and Author are required",
+        showConfirmButton: false,
+        timer: 2500,
+        background: "#ffffff",
+        color: "#111111",
+        iconColor: "#555555",
+        customClass: { popup: "swal-toast-dark" }
       });
       return;
     }
@@ -97,33 +162,63 @@ const BookDetails = () => {
     formData.append("publishedDate", editData.publishedDate);
 
     try {
+      // 🔄 Loading toast
       Swal.fire({
-        title: "Updating...",
-        allowOutsideClick: false,
-        didOpen: () => {
-          Swal.showLoading();
-        },
+        toast: true,
+        position: "top-end",
+        title: "Updating book...",
+        didOpen: () => Swal.showLoading(),
+        showConfirmButton: false,
+        background: "#ffffff",
+        color: "#111111",
+        iconColor: "#555555",
+        customClass: { popup: "swal-toast-dark" }
       });
 
-      await axios.put(`${import.meta.env.VITE_BASE_URL}/book/${id}`, formData);
+      await axios.put(
+        `${import.meta.env.VITE_BASE_URL}/book/${id}`,
+        formData
+      );
 
+      Swal.close();
+
+      // ✅ Success toast
       Swal.fire({
+        toast: true,
+        position: "top-end",
         icon: "success",
-        title: "Updated!",
-        timer: 1500,
+        title: "Book updated successfully",
         showConfirmButton: false,
+        timer: 2000,
+        timerProgressBar: true,
+        background: "#ffffff",
+        color: "#111111",
+        iconColor: "#2e7d32",
+        customClass: { popup: "swal-toast-dark" }
       });
 
       setIsEditing(false);
       fetchBookDetails();
     } catch (error) {
+      Swal.close();
+
       Swal.fire({
+        toast: true,
+        position: "top-end",
         icon: "error",
-        title: "Update failed",
-        text: error.response?.data?.message || "Something went wrong!",
+        title:
+          error.response?.data?.message || "Update failed",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        background: "#ffffff",
+        color: "#111111",
+        iconColor: "#555555",
+        customClass: { popup: "swal-toast-dark" }
       });
     }
   };
+
 
   if (!book)
     return (
@@ -137,7 +232,7 @@ const BookDetails = () => {
 
   return (
     <div className="min-h-screen w-full bg-white flex flex-col">
-      <header className="border-b border-gray-200 px-6 md:px-8 py-4 flex items-center">
+      <header className="border-b fixed border-gray-200 px-6 md:px-8 py-4 flex items-center">
         <Link
           to="/"
           className="flex items-center gap-2 text-gray-700 hover:text-black transition-colors font-medium text-sm"
@@ -159,7 +254,7 @@ const BookDetails = () => {
         </Link>
       </header>
 
-      <main className="flex-1 p-6 md:p-12 flex items-center justify-center">
+      <main className="flex-1 p-6 md:p-12 flex items-center  justify-center">
         <div className="w-full max-w-5xl">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
             <div className="flex flex-col items-center">
@@ -169,7 +264,7 @@ const BookDetails = () => {
                     selectedFile ? URL.createObjectURL(selectedFile) : book.image
                   }
                   alt={book.title}
-                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                  className="w-full h-full object-cover  hover:scale-105 transition-transform duration-300"
                 />
               </div>
 

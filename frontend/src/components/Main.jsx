@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import BookModal from "./BookModal";
+import BooksShimmerGrid from "./BooksShimmerGrid";
 
 const Main = () => {
   const [books, setBooks] = useState([]);
@@ -12,59 +13,141 @@ const Main = () => {
   const fetchBooks = async () => {
     try {
       setIsLoading(true);
+
+      Swal.fire({
+        toast: true,
+        position: "top-end",
+        title: "Loading books...",
+        didOpen: () => {
+          Swal.showLoading();
+        },
+        showConfirmButton: false,
+        allowOutsideClick: false,
+        background: "#ffffff",
+        color: "#111111",
+        iconColor: "#555555",
+        customClass: {
+          popup: "swal-toast-dark"
+        }
+      });
+
       const response = await axios.get(
-        `${import.meta.env.VITE_BASE_URL}/books`,
+        `${import.meta.env.VITE_BASE_URL}/books`
       );
+
       setBooks(response.data);
       setIsModalOpen(false);
-    } catch (error) {
+
+      Swal.close();
+
       Swal.fire({
+        toast: true,
+        position: "top-end",
+        icon: "success",
+        title: "Books loaded successfully",
+        showConfirmButton: false,
+        timer: 2500,
+        timerProgressBar: true,
+        background: "#ffffff",
+        color: "#111111",
+        iconColor: "#2e7d32",
+        customClass: {
+          popup: "swal-toast-dark"
+        }
+      });
+
+    } catch (error) {
+      Swal.close();
+
+      Swal.fire({
+        toast: true,
+        position: "top-end",
         icon: "error",
         title: "Failed to load books",
-        text: "Please check your server or try again later.",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        background: "#ffffff",
+        color: "#111111",
+        iconColor: "#555555",
+        customClass: {
+          popup: "swal-toast-dark"
+        }
       });
+
     } finally {
       setIsLoading(false);
     }
   };
 
+
   const handleAddBook = async (newBookData) => {
     try {
       Swal.fire({
-        title: "Adding Book...",
-        text: "Please wait while we save the book",
-        allowOutsideClick: false,
-        allowEscapeKey: false,
+        toast: true,
+        position: "top-end",
+        title: "Adding book...",
         didOpen: () => {
           Swal.showLoading();
         },
+        showConfirmButton: false,
+        allowOutsideClick: false,
+        background: "#ffffff",
+        color: "#111111",
+        iconColor: "#555555",
+        customClass: {
+          popup: "swal-toast-dark"
+        }
       });
 
-      await axios.post(`${import.meta.env.VITE_BASE_URL}/book`, newBookData);
+      await axios.post(
+        `${import.meta.env.VITE_BASE_URL}/book`,
+        newBookData
+      );
 
       Swal.close();
 
       Swal.fire({
+        toast: true,
+        position: "top-end",
         icon: "success",
-        title: "Book Added",
-        text: "The book has been successfully added to inventory.",
-        timer: 1500,
+        title: "Book added successfully",
         showConfirmButton: false,
+        timer: 2000,
+        timerProgressBar: true,
+        background: "#ffffff",
+        color: "#111111",
+        iconColor: "#2e7d32",
+        customClass: {
+          popup: "swal-toast-dark"
+        }
       });
 
       await fetchBooks();
+
     } catch (error) {
       Swal.close();
 
       Swal.fire({
+        toast: true,
+        position: "top-end",
         icon: "error",
-        title: "Add Failed",
-        text:
+        title:
           error?.response?.data?.message ||
-          "Failed to add book. Please check your API.",
+          "Failed to add book",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        background: "#ffffff",
+        color: "#111111",
+        iconColor: "#555555",
+        customClass: {
+          popup: "swal-toast-dark"
+        }
       });
     }
   };
+
 
   useEffect(() => {
     fetchBooks();
@@ -95,6 +178,8 @@ const Main = () => {
       </header>
 
       <main className="max-w-7xl mx-auto px-4 md:px-8 py-12 md:py-16">
+
+        {isLoading && <BooksShimmerGrid />}
         {!isLoading && books.length > 0 && (
           <div className="mb-10 md:mb-14">
             <div className="text-sm font-medium text-gray-500 uppercase tracking-wider">
@@ -130,7 +215,7 @@ const Main = () => {
                   <p className="text-xs md:text-sm text-gray-600 font-medium mb-4">
                     {book.author}
                   </p>
-                  
+
                   <div className="mt-auto pt-4 border-t border-gray-100">
                     <p className="text-xs text-gray-500 truncate">
                       {book.publisher || 'Independent'}
