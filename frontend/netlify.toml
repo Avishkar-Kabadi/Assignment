@@ -1,0 +1,6 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[secrets_scan]
+  omit_keys = ["VITE_BASE_URL"]
