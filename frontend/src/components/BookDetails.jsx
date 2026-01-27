@@ -33,7 +33,7 @@ const BookDetails = () => {
       });
 
       const res = await axios.get(
-        `${import.meta.env.VITE_BASE_URL}/book/${id}`
+        `https://book-inventory-zh7d.onrender.com/api/book/${id}`
       );
 
       setBook(res.data);
@@ -94,7 +94,7 @@ const BookDetails = () => {
       });
 
       await axios.delete(
-        `${import.meta.env.VITE_BASE_URL}/book/${id}`
+        `https://book-inventory-zh7d.onrender.com/api/book/${id}`
       );
 
       Swal.close();
@@ -197,7 +197,7 @@ const BookDetails = () => {
       });
 
       await axios.put(
-        `${import.meta.env.VITE_BASE_URL}/book/${id}`,
+        `https://book-inventory-zh7d.onrender.com/api/book/${id}`,
         formData
       );
 

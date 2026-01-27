@@ -31,7 +31,7 @@ const Main = () => {
       });
 
       const response = await axios.get(
-        `${import.meta.env.VITE_BASE_URL}/books`
+        `https://book-inventory-zh7d.onrender.com/api/books`
       );
 
       setBooks(response.data);
@@ -99,7 +99,7 @@ const Main = () => {
       });
 
       await axios.post(
-        `${import.meta.env.VITE_BASE_URL}/book`,
+        `https://book-inventory-zh7d.onrender.com/api/book`,
         newBookData
       );
 
