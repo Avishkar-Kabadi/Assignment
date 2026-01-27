@@ -154,6 +154,28 @@ const BookDetails = () => {
       return;
     }
 
+    if (selectedFile) {
+      const maxSizeMB = 2;
+      const fileSizeMB = selectedFile.size / (1024 * 1024);
+
+      if (fileSizeMB > maxSizeMB) {
+        Swal.fire({
+          toast: true,
+          position: "top-end",
+          icon: "warning",
+          title: `Image must be under ${maxSizeMB} MB`,
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          background: "#ffffff",
+          color: "#111111",
+          iconColor: "#555555",
+          customClass: { popup: "swal-toast-dark" }
+        });
+        return;
+      }
+    }
+
     const formData = new FormData();
     if (selectedFile) formData.append("image", selectedFile);
     formData.append("title", editData.title);
@@ -162,7 +184,6 @@ const BookDetails = () => {
     formData.append("publishedDate", editData.publishedDate);
 
     try {
-      // 🔄 Loading toast
       Swal.fire({
         toast: true,
         position: "top-end",
@@ -182,7 +203,6 @@ const BookDetails = () => {
 
       Swal.close();
 
-      // ✅ Success toast
       Swal.fire({
         toast: true,
         position: "top-end",
@@ -199,6 +219,7 @@ const BookDetails = () => {
 
       setIsEditing(false);
       fetchBookDetails();
+
     } catch (error) {
       Swal.close();
 
@@ -206,8 +227,7 @@ const BookDetails = () => {
         toast: true,
         position: "top-end",
         icon: "error",
-        title:
-          error.response?.data?.message || "Update failed",
+        title: error.response?.data?.message || "Update failed",
         showConfirmButton: false,
         timer: 3000,
         timerProgressBar: true,
@@ -218,6 +238,7 @@ const BookDetails = () => {
       });
     }
   };
+
 
 
   if (!book)

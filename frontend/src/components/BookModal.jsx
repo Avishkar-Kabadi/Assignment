@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 
@@ -31,18 +32,34 @@ const BookModal = ({ isOpen, onClose, onAdd }) => {
 
     if (!formData.title.trim() || !formData.author.trim()) {
       Swal.fire({
+        toast: true,
+        position: "top-end",
         icon: "error",
-        title: "Incomplete Form",
-        text: "Please fill in both Title and Author before submitting.",
+        title: "Title and Author are required",
+        showConfirmButton: false,
+        timer: 2500,
+        timerProgressBar: true,
+        background: "#ffffff",
+        color: "#111111",
+        iconColor: "#555555",
+        customClass: { popup: "swal-toast-dark" }
       });
       return;
     }
 
     if (!selectedFile) {
       Swal.fire({
+        toast: true,
+        position: "top-end",
         icon: "error",
-        title: "No Cover Selected",
-        text: "Please select a cover image for the book.",
+        title: "Please select a cover image",
+        showConfirmButton: false,
+        timer: 2500,
+        timerProgressBar: true,
+        background: "#ffffff",
+        color: "#111111",
+        iconColor: "#555555",
+        customClass: { popup: "swal-toast-dark" }
       });
       return;
     }
@@ -52,12 +69,21 @@ const BookModal = ({ isOpen, onClose, onAdd }) => {
 
     if (fileSizeMB > maxSizeMB) {
       Swal.fire({
+        toast: true,
+        position: "top-end",
         icon: "warning",
-        title: "Image Too Large",
-        text: `Cover image size should be less than ${maxSizeMB} MB.`,
+        title: `Image must be under ${maxSizeMB} MB`,
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        background: "#ffffff",
+        color: "#111111",
+        iconColor: "#555555",
+        customClass: { popup: "swal-toast-dark" }
       });
       return;
     }
+
 
     const data = new FormData();
     data.append("image", selectedFile);
