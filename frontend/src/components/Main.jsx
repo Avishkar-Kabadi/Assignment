@@ -22,7 +22,6 @@ const Main = () => {
           Swal.showLoading();
         },
         showConfirmButton: false,
-        allowOutsideClick: false,
         background: "#ffffff",
         color: "#111111",
         iconColor: "#555555",
@@ -91,7 +90,6 @@ const Main = () => {
           Swal.showLoading();
         },
         showConfirmButton: false,
-        allowOutsideClick: false,
         background: "#ffffff",
         color: "#111111",
         iconColor: "#555555",
