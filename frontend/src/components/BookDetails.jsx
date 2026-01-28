@@ -279,7 +279,7 @@ const BookDetails = () => {
         <div className="w-full max-w-5xl">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
             <div className="flex flex-col items-center">
-              <div className="w-80 aspect-3/4 rounded-lg bg-gray-100 border border-gray-300 overflow-hidden flex items-center justify-center">
+              <div className="w-80  aspect-3/4 rounded-lg bg-gray-100 border border-gray-300 overflow-hidden flex items-center justify-center">
                 <img
                   src={
                     selectedFile ? URL.createObjectURL(selectedFile) : book.image

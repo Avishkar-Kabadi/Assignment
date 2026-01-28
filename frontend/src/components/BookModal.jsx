@@ -103,8 +103,8 @@ const BookModal = ({ isOpen, onClose, onAdd }) => {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
       <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto border border-gray-200">
-        <div className="sticky top-0 bg-white border-b border-gray-200 p-2 md:p-8 flex justify-between items-center">
-          <h2 className="text-2xl md:text-3xl font-bold text-black">
+        <div className="sticky top-0 z-60 bg-white border-b border-gray-200 p-2 md:p-8 flex justify-between items-center">
+          <h2 className="text-2xl  md:text-3xl font-bold text-black">
             Add New Book
           </h2>
           <button
